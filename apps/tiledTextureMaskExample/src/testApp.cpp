@@ -19,8 +19,6 @@ void testApp::update() {
 
 //--------------------------------------------------------------
 void testApp::draw() {
-    glDisable(GL_BLEND);
-    
     xTiles = ofGetWidth()/float(ABS(mouseX)+1);
     xTiles = xTiles*(ofGetWidth()/SCALAR);
     xTiles = xTiles/ofGetWidth();
@@ -29,11 +27,24 @@ void testApp::draw() {
     yTiles = yTiles*(ofGetWidth()/SCALAR);
     yTiles = yTiles/ofGetWidth();
     
+    // draw the tiles
     tex.draw(0, 0, ofGetWidth(), ofGetHeight(), xTiles, yTiles);
     
     glEnable(GL_BLEND);
-    glBlendFunc(BLEND_MODES[srcBlend], BLEND_MODES[dstBlend]);
-    bgImage.draw(0, 0, ofGetWidth(), ofGetHeight());    
+    {
+        glBlendFunc(BLEND_MODES[srcBlend], BLEND_MODES[dstBlend]);
+        // draw the background image
+        bgImage.draw(0, 0, ofGetWidth(), ofGetHeight()); 
+    }
+    glDisable(GL_BLEND);
+    
+    // print some instructions
+    ofSetColor(0);
+    ofFill();
+    ofRect(20, ofGetHeight() - 20 - 80, 355, 85);
+    ofSetColor(255, 255, 255);
+    ofDrawBitmapString("[s] toggles LINEAR SMOOTH\n[f] cycles through SIZE MODE\n[up/down] cycles through SRC BLEND MODE\n[left/right] cycles through DST BLEND MODE\n[</>] cycles through ALPHA MODE", 
+                       30, ofGetHeight() - 20 - 60);
 }
 
 //--------------------------------------------------------------
